@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="marin.magicaltodo" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MagicalTodo</name>
+    <description>
+	A Magically powerful ToDo App!
+    </description>
+    <author email="marin.bivol@dcu.ie" href="http://codeismagic.com">
+        Marin Bivol App Foundation
+    </author>
+    <content src="index.html" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+	<allow-intent href="itms-apps:*" />       
+        <preference name="BackupWebStorage" value="none" /><!-- iCloud Fuck off -->
+        <preference name="DisallowOverscroll" value="true" /><!-- Scrolling is annoying -->
+        <preference name="orientation" value="portrait" /><!-- Horizontal view only -->
+        <icon src="www/img/icons/20.png" width="20" height="20" />
+        <icon src="www/img/icons/29.png" width="29" height="29" />
+        <icon src="www/img/icons/40.png" width="40" height="40" />
+        <icon src="www/img/icons/48.png" width="48" height="48" />
+        <icon src="www/img/icons/50.png" width="50" height="50" />
+        <icon src="www/img/icons/55.png" width="55" height="55" />
+        <icon src="www/img/icons/57.png" width="57" height="57" />
+        <icon src="www/img/icons/58.png" width="58" height="58" />
+        <icon src="www/img/icons/60.png" width="60" height="60" />
+        <icon src="www/img/icons/72.png" width="72" height="72" />
+        <icon src="www/img/icons/76.png" width="76" height="76" />
+        <icon src="www/img/icons/80.png" width="80" height="80" />
+        <icon src="www/img/icons/87.png" width="87" height="87" />
+        <icon src="www/img/icons/88.png" width="88" height="88" />
+        <icon src="www/img/icons/100.png" width="100" height="100" />
+        <icon src="www/img/icons/114.png" width="114" height="114" />
+        <icon src="www/img/icons/120.png" width="120" height="120" />
+        <icon src="www/img/icons/144.png" width="144" height="144" />
+        <icon src="www/img/icons/152.png" width="152" height="152" />
+        <icon src="www/img/icons/167.png" width="167" height="167" />
+        <icon src="www/img/icons/172.png" width="172" height="172" />
+        <icon src="www/img/icons/180.png" width="180" height="180" />
+        <icon src="www/img/icons/196.png" width="196" height="196" />
+        <icon src="www/img/icons/216.png" width="216" height="216" />
+        <icon src="www/img/icons/1024.png" width="1024" height="1024" />
+    </platform>
+</widget>
