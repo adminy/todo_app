@@ -199,3 +199,13 @@ body {
   word-wrap: break-word;
   hyphens: auto;
 }
+
+.tag {
+  border: 1px solid red;
+  padding: 3px;
+  border-radius: 2%;
+  display: inline-block;
+  width: auto;
+  color: white;
+  background: black;
+}

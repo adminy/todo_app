@@ -37,3 +37,7 @@ const mInsertQuery = (tx, sqlStatement, params, finishedCallback) =>
     else
         console.log('>>> task is not unique / already exists')
   })
+
+const insertQuery = (db, sqlStatement, params, finishedCallback) =>
+    db.transaction(tx => mInsertQuery(tx, sqlStatement, params, finishedCallback))
+  

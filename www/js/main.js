@@ -1,5 +1,3 @@
-const goToPage = () => $('main').innerHTML = ''
-
 document.addEventListener('deviceready', () =>
   openDB(db => {
     sqlSession(db, tx => INITIAL_SQL.forEach(SQL => tx.executeSql(SQL)), () => {
@@ -15,6 +13,6 @@ document.addEventListener('deviceready', () =>
         ]
       })
       //load items in menu
-      projectsListPanel(app, PROJECT_ICONS, db)
+      projectsListPanel(db)
     })
   }), false)

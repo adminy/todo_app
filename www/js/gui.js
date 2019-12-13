@@ -50,6 +50,13 @@ const $ = id => document.getElementById(id),
         element.style.maxWidth = element.style.width
         return element
     },
+    elementChildren = (where, children) => {
+        for (const child of children) {
+            const elementName = Object.keys(child)[0]
+            const elementProps = Object.values(child)[0]
+            appendElement(where, elementName, elementProps)
+        }
+    },
     style = appendElement(document.head, 'style', {}),
     css = (tagName, tagStyle) => {
 

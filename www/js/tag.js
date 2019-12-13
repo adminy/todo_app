@@ -1,7 +1,7 @@
 const onAddTag = (db) => {
-  const tagName = $('tag_name').value.trim()  
+  const tagName = $TV('tag_name')
    if(tagName)
-     sqlQuery(db, 'INSERT INTO TagsTable (TagName) VALUES(?)', [tagName], () => {
+     sqlQuery(db, SQLS.InsertTag, [tagName], () => {
        $('tag_name').value = ''
        $('tag_info').style.color = 'green'
        loadTags(db)
@@ -11,8 +11,8 @@ const onAddTag = (db) => {
 
 const loadTags = db => {
   $('task_tags').innerHTML = ''
-  sqlQuery(db, 'SELECT * FROM TagsTable', [], res => {
-      for(let i = 0; i < res.rows.length; i++)
-        appendElement($('task_tags'), 'option', {value: res.rows.item(i)._id, text: res.rows.item(i).TagName})
+  sqlQuery(db, SQLS.Tags, [], res => {
+    for(let i = 0; i < res.rows.length; i++)
+      appendElement($('task_tags'), 'option', {value: res.rows.item(i)._id, text: res.rows.item(i).TagName})
   })
 }

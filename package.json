@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "A Magically powerful ToDo App!",
   "keywords": [
-    "ecosystem:cordova"
+    "ecosystem:cordova",
+    "https://github.com/cjpearson/cordova-plugin-keyboard.git"
   ],
   "author": "Marin Bivol App Foundation",
   "license": "Apache-2.0",
@@ -12,9 +13,7 @@
     "run": "cordova run ios --device"
   },
   "dependencies": {
-    "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.1.1",
-    "cordova-plugin-keyboard": "git+https://github.com/cjpearson/cordova-plugin-keyboard.git",
     "cordova-sqlite-storage": "^4.0.0"
   },
   "devDependencies": {
@@ -23,12 +22,10 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-sqlite-storage": {},
-      "cordova-plugin-keyboard": {}
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
-      "ios",
-      "browser"
+      "ios"
     ]
   }
 }
