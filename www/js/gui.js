@@ -57,6 +57,27 @@ const $ = id => document.getElementById(id),
             appendElement(where, elementName, elementProps)
         }
     },
+    $SYS_METHODS = {},
+    SYSTEM = {
+        DEF: (name, method) => $SYS_METHODS[name] = method,
+        GET: (name) => $SYS_METHODS[name],
+        CALL: (name, ...rest) => $SYS_METHODS[name].apply(null, rest),
+        HTML: (element, html) => document.querySelector(element).innerHTML = html,
+        FILTER: (elements, conditional) => {
+            const newElements = []
+            for(const element of elements)
+              if(conditional(element))
+                  newElements.push(element)
+            return newElements
+        },
+        FILTER_INDEX: (elements, conditional) => {
+            const newElements = []
+            for(let i = 0; i < elements.length; i++)
+              if(conditional(elements[i]))
+                  newElements.push(i)
+            return newElements
+        },
+    },
     style = appendElement(document.head, 'style', {}),
     css = (tagName, tagStyle) => {
 
@@ -117,5 +138,7 @@ const $ = id => document.getElementById(id),
     
         return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     },
-    FRIENDLY_COLOURS = ['#41B3A3', '#C38D9E', '#E8A87C', '#85DCB0', '#E27D60', '#659DBD', '#DAAD86', '#FBEEC1', '#5CDB95', '#97CAEF', '#AFD275', '#FF6347']
+    FRIENDLY_COLOURS = ['#41B3A3', '#C38D9E', '#E8A87C', '#85DCB0', '#E27D60', '#659DBD', '#DAAD86', '#FBEEC1', '#5CDB95', '#97CAEF', '#AFD275', '#FF6347', 
+        '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'
+    ]
 

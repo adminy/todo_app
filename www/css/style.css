@@ -209,3 +209,13 @@ body {
   color: white;
   background: black;
 }
+
+.projects_menu_item {
+  color: white;
+  font-weight: bold;
+  font-size: 220%;
+  text-align: center
+}
+
+#menuLeftScroll::-webkit-scrollbar { display: none }
+

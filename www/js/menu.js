@@ -1,50 +1,30 @@
-css('.projects_menu_item', {
-    // background: 'tomato',
-    color: 'white',
-    'font-weight': 'bold',
-    'font-size': '220%',
-    'text-align': 'center'
-})
-css('#menuLeftScroll::-webkit-scrollbar ', { display: 'none' })
+const onMenuIcon = event =>
+    SYSTEM.CALL('project:show', event.srcElement.getAttribute('data-id'))
 
-const onMenuIcon = (e, db) => {
-    const listOfIcons = $('menuLeftScroll').children
-    for(let j = 0; j < listOfIcons.length; j++)
-        listOfIcons[j].style.border = ''
-    if(e.srcElement.hasAttribute('data-id')) {
-        e.srcElement.parentElement.style.border = '2px solid red'
-        loadProjectPage(db, e.srcElement.getAttribute('data-id'))
-    }
-}
-
-const populateLeftMenu = (db) => { //......... https://material.io/resources/icons/?icon=rowing&style=baseline
-    $('menuLeftScroll').innerHTML = ''
-    sqlQuery(db, SQLS.Projects, [], res => {
-        for(let i = 0; i < res.rows.length; i++) {
-            const ProjectIcon = res.rows.item(i).ProjectIcon
-            const ProjectID = res.rows.item(i)._id
-
-            appendElement($('menuLeftScroll'), 'div', { 
-                borderRadius: '30%',
-                width: 'auto',
-                background: FRIENDLY_COLOURS[ProjectIcon], 
-                color: blackOrWhite(FRIENDLY_COLOURS[ProjectIcon]), 
-                ontouchstart: (e) => onMenuIcon(e, db),
-                child: {i: { class: 'material-icons', 'data-id': ProjectID, fontSize: '320%', cursor: 'pointer', text:  PROJECT_ICONS[ProjectIcon]}}
-            })
-        }
+const newMenuIcon = (projectID, ProjectIcon) =>
+    appendElement($('menuLeftScroll'), 'div', { 
+        borderRadius: '30%',
+        width: 'auto',
+        background: FRIENDLY_COLOURS[ProjectIcon], 
+        color: blackOrWhite(FRIENDLY_COLOURS[ProjectIcon]), 
+        ontouchstart: onMenuIcon,
+        child: {i: {
+            class: 'material-icons',
+            'data-id': projectID,
+            fontSize: '320%',
+            cursor: 'pointer',
+            text: PROJECT_ICONS[ProjectIcon]
+        }}
     })
-}
   
-const onNewProject = (db) => {
+const onPlusButton = () => {
     const listOfIcons = $('menuLeftScroll').children
     for(let j = 0; j < listOfIcons.length; j++)
         listOfIcons[j].style.border = ''
-    createProject(db)
+    SYSTEM.CALL('project:new')
 }
 
-const projectsListPanel = (db) => {
-    //plus button
+const plusButton = () =>
     appendElement($('menu'), 'div', {class: 'projects_menu_item',  child: {i: {
         class: 'material-icons',
         text: 'add_circle_outline',
@@ -55,15 +35,45 @@ const projectsListPanel = (db) => {
         fontSize: '200%',
         cursor: 'pointer',
         height: 'auto',
-        ontouchstart: () => onNewProject(db)
+        ontouchstart: onPlusButton
     }}})
 
+const tagEditButton = () =>
+    appendElement($('menu'), 'div', {class: 'projects_menu_item',  child: {i: {
+        class: 'material-icons',
+        text: 'style',
+        borderRadius: '50%',
+        border: '3px solid lightblue',
+        backgroundColor: 'blue',
+        backgroundImage: 'linear-gradient(blue, lightblue)',
+        fontSize: '200%',
+        cursor: 'pointer',
+        height: 'auto',
+        ontouchstart: () => SYSTEM.CALL('tags:edit')
+    }}})
+
+
+
+const projectsList = () =>
     appendElement($('menu'), 'div', {
         id: 'menuLeftScroll',
         overflowY: 'scroll',
         textAlign: 'center',
         flex: 1
     })
-    populateLeftMenu(db)  
-}
-  
+
+SYSTEM.DEF('menu:projects:list', (whenDone) => {
+    whenDone = whenDone || (() => {})
+    SYSTEM.HTML('#menuLeftScroll', html='')
+    SYSTEM.CALL('db:query', SQLS.Projects, [], projects => {
+        projects.forEach(project => newMenuIcon(project._id, project.ProjectIcon))
+        whenDone()
+    })
+})
+
+SYSTEM.DEF('menu:show', () => {
+    tagEditButton()
+    plusButton()
+    projectsList()
+    SYSTEM.CALL('menu:projects:list')
+})
