@@ -103,14 +103,16 @@ SYSTEM.DEF('tasks:list', (projectPage, projectID) => {
             {legend: {text: task.TaskName, fontSize: '16px'}},
             {div: {text: task.TaskGoal, fontSize: '15px'}},
             {div: {children: [
-              {button: {text: '-', fontSize: '16px', ontouchstart: () =>
+              {button: {text: '-', fontSize: '16px', border: '2px solid red', ontouchstart: () =>
                 SYSTEM.CALL('task:points', task.TaskID, false)
               }},
-              {span: {id: 'task_points_' + task.TaskID, text: task.TaskPoints, fontSize: '21px', color: 'red'}},
-              {button: {text: '+', fontSize: '16px', ontouchstart: () =>
+              {span: {text: 'Points: ', fontSize: '20px'}},
+              {span: {id: 'task_points_' + task.TaskID, text: task.TaskPoints, fontSize: '20px', color: 'red'}},
+              {button: {text: '+', fontSize: '16px', border: '2px solid green', ontouchstart: () =>
                 SYSTEM.CALL('task:points', task.TaskID, true)  
               }},
-              {button: {text: 'x', color: 'red', float: 'right', ontouchstart: deleteTask, fontSize: '17px'}}
+              {button: {text: 'x', color: 'red', float: 'right', ontouchstart: deleteTask, border: '1px solid black', fontSize: '16px'}},
+              {br: {}}, {br: {}},
             ]}},
           ]
         })

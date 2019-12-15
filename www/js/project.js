@@ -99,7 +99,7 @@ SYSTEM.DEF('project:edit', res => {
     {input: {value: res.ProjectName, placeholder: 'Project name', width: '80%', fontSize: '17px'}},
     {br:{}},
     {textarea: {value: res.ProjectGoal, text: res.ProjectGoal, placeholder: 'Project Goal', width: '80%', height: '25vh', fontSize: '17px'}},
-    {br: {}},
+    {h3: {text: 'Project Finish Date'}},
     {input: {type: 'date', value: res.ProjectEndDate ? $DATE(res.ProjectEndDate).split('/').reverse().join('-') : '', placeholder: 'Project Finish Date', width: '80%', fontSize: '17px'}},
     {br: {}},
     {div: {}}, {br: {}},
@@ -156,7 +156,7 @@ SYSTEM.DEF('project:show', projectID => {
       {br: {}}, {br: {}},
       {div: { text: res.ProjectGoal, class: 'ow', fontSize: '17px', width: '100%'}},
       {div: {textAlign: 'center', children: [
-        {button: { text: 'Create Task', class: 'glass', fontSize: '17px', background: 'linear-gradient(#507,#eaf)', width: '80%', ontouchstart: () =>
+        {button: { text: 'Create Task', class: 'glass', fontSize: '20px', background: 'linear-gradient(#507,#eaf)', width: '80%', ontouchstart: () =>
           SYSTEM.CALL('task:new', res._id, res.ProjectName, res.ProjectIcon)
         }}
       ]}}
