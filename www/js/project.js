@@ -109,7 +109,7 @@ SYSTEM.DEF('project:edit', res => {
     {br: {}},
     {div: {}}, {br: {}},
     {div: {textAlign: 'center', children: [
-      {button: { text: 'Update Project', class: 'glass', background: 'linear-gradient(#740,gold)', fontSize: '21px', width: '80%', ontouchstart: () =>
+      {button: { text: 'Update Project', class: 'glass', background: 'linear-gradient(#740,gold)', ontouchstart: () =>
         SYSTEM.CALL('db:query', SQLS.UpdateProject, [
           $('edit_project_form').children[0].value,
           $('edit_project_form').children[2].value,
@@ -156,7 +156,7 @@ SYSTEM.DEF('project:show', projectID => {
       {br: {}}, {br: {}},
       {div: { text: res.ProjectGoal, class: 'ow', fontSize: '17px', width: '100%'}},
       {div: {textAlign: 'center', children: [
-        {button: { text: 'Create Task', class: 'glass', fontSize: '20px', background: 'linear-gradient(#507,#eaf)', width: '80%', ontouchstart: () =>
+        {button: { text: 'Create Task', class: 'glass', background: 'linear-gradient(#507,#eaf)', ontouchstart: () =>
           SYSTEM.CALL('task:new', res._id, res.ProjectName, res.ProjectIcon)
         }}
       ]}}

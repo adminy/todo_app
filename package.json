@@ -1,7 +1,7 @@
 {
   "name": "magicaltodo",
   "displayName": "Magical Todo",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A Magically powerful ToDo App!",
   "keywords": [
     "ecosystem:cordova",
@@ -13,7 +13,7 @@
     "run": "cordova run ios --device"
   },
   "dependencies": {
-    "cordova-ios": "^5.1.1",
+    "cordova-ios": "git+https://github.com/apache/cordova-ios.git",
     "cordova-sqlite-storage": "^4.0.0"
   },
   "devDependencies": {
