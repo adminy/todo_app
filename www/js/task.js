@@ -77,17 +77,23 @@ SYSTEM.DEF('task:points', (TaskID, addPoints) => {
     pointSpan.innerText = points
     const newList = []
     for(const task of $('project_tasks_list').children)
-      newList.push([task.children[2].children[1].innerText, task])
-
+      newList.push([task.children[2].children[2].innerText, task])
+      
     SYSTEM.HTML('#project_tasks_list', html='')
-    newList.sort((a, b) => b[0]-a[0] || a[1].children[0].innerText.localeCompare(b[1].children[0].innerText))
+    newList.sort((a, b) => {
+      console.log('>?>?>', a[0], b[0], a[1].children[0].innerText, b[1].children[0].innerText)
+      if (parseInt(a[0]) < parseInt(b[0])) return 1
+      if (parseInt(a[0]) > parseInt(b[0])) return -1
+      return a[1].children[0].innerText.localeCompare(b[1].children[0].innerText)
+      // parseInt(b[0])-parseInt(a[0]) || a[1].children[0].innerText.localeCompare(b[1].children[0].innerText)
+    })
       .forEach(([points, element]) => $('project_tasks_list').appendChild(element))
   })
 })
 
 SYSTEM.DEF('tasks:list', (projectPage, projectID) => {
   SYSTEM.CALL('db:session', tx =>
-    SYSTEM.CALL('db:query:mini', tx, SQLS.Tasks, [projectID], (tasks) => {
+    SYSTEM.CALL('db:query:mini', tx, SQLS.TasksForProj, [projectID], (tasks) => {
       appendElement(projectPage, 'div', {
           fontSize: '24px',
           text: `Project Tasks: ${tasks.length}`
@@ -97,7 +103,7 @@ SYSTEM.DEF('tasks:list', (projectPage, projectID) => {
       for(const task of tasks) {
         const deleteMsg = `Are you sure you want to delete Task: ${task.TaskName}`
         const deleteCb = () => SYSTEM.CALL('task:delete', task.TaskID, projectID)
-        const deleteTask = () => $TCB(confirm(deleteMsg), deleteCb)
+        const deleteTask = () => deleteCb() //$TCB(confirm(deleteMsg), deleteCb)
         const taskElement = appendElement($('project_tasks_list'), 'fieldset', {
           children: [
             {legend: {text: task.TaskName, fontSize: '16px'}},

@@ -1,13 +1,13 @@
-const onMenuIcon = event =>
-    SYSTEM.CALL('project:show', event.srcElement.getAttribute('data-id'))
-
-const newMenuIcon = (projectID, ProjectIcon) =>
+const newMenuIcon = (projectID, ProjectIcon) => {
     appendElement($('menuLeftScroll'), 'div', { 
         borderRadius: '30%',
         width: 'auto',
         background: FRIENDLY_COLOURS[ProjectIcon], 
         color: blackOrWhite(FRIENDLY_COLOURS[ProjectIcon]), 
-        ontouchstart: onMenuIcon,
+        ontouchstart: e => {
+            if(e.srcElement.hasAttribute('data-id')) //bug ios (if stement fixes it)
+                SYSTEM.CALL('project:show', e.srcElement.getAttribute('data-id'))
+        },
         child: {i: {
             class: 'material-icons',
             'data-id': projectID,
@@ -16,6 +16,7 @@ const newMenuIcon = (projectID, ProjectIcon) =>
             text: PROJECT_ICONS[ProjectIcon]
         }}
     })
+}
   
 const onPlusButton = () => {
     const listOfIcons = $('menuLeftScroll').children
@@ -24,7 +25,7 @@ const onPlusButton = () => {
     SYSTEM.CALL('project:new')
 }
 
-const plusButton = () =>
+const plusButton = () => {
     appendElement($('menu'), 'div', {class: 'projects_menu_item',  child: {i: {
         class: 'material-icons',
         text: 'add_circle_outline',
@@ -37,8 +38,9 @@ const plusButton = () =>
         height: 'auto',
         ontouchstart: onPlusButton
     }}})
+}
 
-const tagEditButton = () =>
+const tagEditButton = () => {
     appendElement($('menu'), 'div', {class: 'projects_menu_item',  child: {i: {
         class: 'material-icons',
         text: 'style',
@@ -51,16 +53,16 @@ const tagEditButton = () =>
         height: 'auto',
         ontouchstart: () => SYSTEM.CALL('tags:edit')
     }}})
+}
 
-
-
-const projectsList = () =>
+const projectsList = () => {
     appendElement($('menu'), 'div', {
         id: 'menuLeftScroll',
         overflowY: 'scroll',
         textAlign: 'center',
         flex: 1
     })
+}
 
 SYSTEM.DEF('menu:projects:list', (whenDone) => {
     whenDone = whenDone || (() => {})

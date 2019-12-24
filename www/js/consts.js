@@ -1,10 +1,4 @@
 const PREPARE_DB = [
-    //---------------------------------- clean up
-    // 'DROP TABLE IF EXISTS ProjectsTable',
-    // 'DROP TABLE IF EXISTS TasksTable',
-    // 'DROP TABLE IF EXISTS TagsTable',
-    // 'DROP TABLE IF EXISTS ProjectsToTasksTable',
-    // 'DROP TABLE IF EXISTS TasksToTagsTable',
     //---------------------------------- essential tables
     'CREATE TABLE IF NOT EXISTS ProjectsTable (_id INTEGER PRIMARY KEY, ProjectName TEXT,  ProjectGoal, ProjectIcon INTEGER, ProjectStartDate TEXT, ProjectEndDate TEXT)',
     'CREATE TABLE IF NOT EXISTS TasksTable (_id INTEGER PRIMARY KEY, TaskName TEXT,  TaskGoal, TaskPoints INTEGER  DEFAULT 0)',
@@ -13,6 +7,17 @@ const PREPARE_DB = [
     'CREATE TABLE IF NOT EXISTS ProjectsToTasksTable (ProjectID INTEGER NOT NULL, TaskID INTEGER NOT NULL, PRIMARY KEY ( ProjectID, TaskID))',
     'CREATE TABLE IF NOT EXISTS TasksToTagsTable (TaskID INTEGER NOT NULL, TagID INTEGER NOT NULL, PRIMARY KEY ( TaskID, TagID))'
 ]
+
+const CLEAN_DB = [
+    //---------------------------------- clean up
+    'DROP TABLE IF EXISTS ProjectsTable',
+    'DROP TABLE IF EXISTS TasksTable',
+    'DROP TABLE IF EXISTS TagsTable',
+    'DROP TABLE IF EXISTS ProjectsToTasksTable',
+    'DROP TABLE IF EXISTS TasksToTagsTable'
+].concat(PREPARE_DB)
+
+
 const SQLS = {
     Projects: 'SELECT * FROM ProjectsTable',
     Project: 'SELECT * FROM ProjectsTable WHERE _id=?',
@@ -20,7 +25,7 @@ const SQLS = {
     DeleteProject: 'DELETE FROM ProjectsTable WHERE _id=?',
     UpdateProject: 'UPDATE ProjectsTable SET ProjectName=?,  ProjectGoal=?, ProjectIcon=?, ProjectEndDate=? WHERE _id=?',
 
-    Tasks: 'SELECT * FROM TasksTable JOIN ProjectsToTasksTable ON TasksTable._id=ProjectsToTasksTable.TaskID WHERE ProjectsToTasksTable.ProjectID=? ORDER BY TaskPoints DESC, TaskName ASC',
+    TasksForProj: 'SELECT * FROM TasksTable JOIN ProjectsToTasksTable ON TasksTable._id=ProjectsToTasksTable.TaskID WHERE ProjectsToTasksTable.ProjectID=? ORDER BY TaskPoints DESC, TaskName ASC',
     InsertTask: 'INSERT INTO TasksTable (TaskName, TaskGoal) VALUES(?, ?)',
     DeleteTask: 'DELETE FROM TasksTable WHERE _id=?',
     UpdateTask: 'UPDATE TasksTable SET TaskPoints=? WHERE _id=?',

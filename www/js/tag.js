@@ -15,7 +15,6 @@ SYSTEM.DEF('tag:delete', (TaskID, TagID) => {
   })
 })
 
-
 SYSTEM.DEF('tags:list', () => {
   SYSTEM.HTML('#task_tags', html='')
   SYSTEM.CALL('db:query', SQLS.Tags, [], tags => 
@@ -60,4 +59,11 @@ SYSTEM.DEF('tags:edit', () => {
       ]})
     )
   })
+  elementChildren($('main'), [{br:{}}, {br:{}}, {br:{}}, {br:{}}, {br:{}}])
+  appendElement($('main'), 'button', {text: 'Clean up Entire Database', fontSize: '19px', textAlign: 'center', border: '1px solid red', color: 'red', ontouchstart: () => {
+    SYSTEM.CALL('db:batch', CLEAN_DB, () => {
+      SYSTEM.HTML('#menuLeftScroll', html='')
+      SYSTEM.HTML('#main', html='')
+    })
+  }})
 })

@@ -4,7 +4,7 @@ const whenProjDeleted = () => {
 }
 
 const deleteProject = projectID => {
-  SYSTEM.CALL('db:query', SQLS.Tasks, [projectID], tasks =>
+  SYSTEM.CALL('db:query', SQLS.TasksForProj, [projectID], tasks =>
     SYSTEM.CALL('db:query:rec', SQLS.DeleteLinkTags2Task, [], tasks.map(task => task.TaskID), () =>
       SYSTEM.CALL('db:query:rec', SQLS.DeleteLinkTask2Proj, [], tasks.map(task => task.TaskID), () =>
         SYSTEM.CALL('db:query:rec', SQLS.DeleteTask, [], tasks.map(task => task.TaskID), () =>
@@ -20,9 +20,9 @@ const onCreateProject = () => {
   const form = $('create_project_form').children
   const icons = $('project_icons').children
   const isSelected = icon => icon.style.border == '2px solid red'
-  const icon = SYSTEM.FILTER_INDEX(icons, isSelected)[0]
   const name = form[0].children[1].value.trim()
   const goal = form[1].children[1].value.trim()
+  const icon = SYSTEM.FILTER_INDEX(icons, isSelected)[0]
   const timeNow = new Date().getTime()
   if(name == '' || goal == '')
     for(let i = 0; i < 3; i++)
@@ -31,11 +31,15 @@ const onCreateProject = () => {
     SYSTEM.CALL('db:insert', SQLS.InsertProject, [name, goal, icon, timeNow], whenProjectCreated)
 }
 
-const projectIconSelect = (e) => {
-  for(const icon of $('project_icons').children)
-    icon.style.border = ''
-  if(e.srcElement.hasAttribute('data-id')) //bug ios (if stement fixes it)
+const prepareIcons = (icons, attrName) => {
+  loadIcons(icons, attrName, e => { //class:glass => 'linear-gradient(#258,#aef)', 'linear-gradient(#700,#f00)', 'linear-gradient(#740,gold)', 'linear-gradient(#507,#eaf)', 'linear-gradient(#b40,orange)', 'linear-gradient(#073,#0fa)','linear-gradient(#000,#888)'
+
+    for(const icon of icons.children)
+      icon.style.border = ''
+    if(e.srcElement.hasAttribute(attrName)) //bug ios (if stement fixes it)
       e.srcElement.parentElement.style.border = '2px solid red'
+
+  })
 }
 
 const loadIcons = (icons, id, selectIconCallback) => {
@@ -59,8 +63,8 @@ const loadIcons = (icons, id, selectIconCallback) => {
     })
 }
 
-const createProjectForm = () =>
-  appendElement($('main'), 'div',  {class: 'form-style-7', child: {ul: {id: 'create_project_form', children: [
+const createProjectForm = () => {
+  appendElement($('main'), 'div', {class: 'form-style-7', child: {ul: {id: 'create_project_form', children: [
     {li: {children: [
       {label: {for: 'project_name', text: 'Project Name'}},
       {input: {type: 'text', name: 'project_name'}},
@@ -85,11 +89,12 @@ const createProjectForm = () =>
       }}
     ]}}
   ]}}})
+}
 
 SYSTEM.DEF('project:new', () => {
   SYSTEM.HTML('#main', html='')
   createProjectForm()
-  loadIcons($('project_icons'), 'data-id', projectIconSelect) //class:glass => 'linear-gradient(#258,#aef)', 'linear-gradient(#700,#f00)', 'linear-gradient(#740,gold)', 'linear-gradient(#507,#eaf)', 'linear-gradient(#b40,orange)', 'linear-gradient(#073,#0fa)','linear-gradient(#000,#888)'
+  prepareIcons($('project_icons'), 'data-id')
 })
 
 
@@ -119,13 +124,8 @@ SYSTEM.DEF('project:edit', res => {
 
   const icons = $('edit_project_form').children[6]
 
-  loadIcons(icons, 'data-edit-id', (e) => {
-    for(const icon of icons.children)
-      icon.style.border = ''
-    if(e.srcElement.hasAttribute('data-edit-id')) //bug ios (if stement fixes it)
-      e.srcElement.parentElement.style.border = '2px solid red'
-
-  })
+  prepareIcons(icons, 'data-edit-id')
+  //select default
   for(const icon of icons.children)
     icon.style.border = icon.children[0].getAttribute('data-edit-id') == res.ProjectIcon ? '2px solid red' : ''
 })
@@ -146,7 +146,7 @@ SYSTEM.DEF('project:show', projectID => {
       {span: {float: 'right', color: 'red', text: endDate}},
       {br: {}},
       {button: {text: 'delete', color: 'red', border: '1px solid orange', fontSize: '16px', float: 'right', ontouchstart: () => 
-        $TCB(confirm(deleteMsg), deleteCb)
+        deleteCb() // $TCB(confirm(deleteMsg), deleteCb)
       }},
       {span: {text: '. .', float: 'right'}},
       {button: {text: 'edit', border: '1px solid orange', fontSize: '16px', float: 'right', ontouchstart: () => 
